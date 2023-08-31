@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PlayListMock from "../../__mock__/playList.json";
 
 function State1() {
@@ -14,6 +15,15 @@ function State1() {
   console.log(PlayListMock.playlist);
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
 
+  const [{ title, singer }, setAddUser] = useState({
+    title: "",
+    singer: "",
+  });
+
+  const onAddUser = (e) => {
+    console.log(e.target.title, e.target.singer);
+  };
+
   return (
     <>
       <h1>문제1</h1>
@@ -27,13 +37,13 @@ function State1() {
       </ul>
       <div>
         <p>
-          곡명 : <input />
+          곡명 : <input name="title" />
         </p>
         <p>
-          가수/작곡 : <input />
+          가수/작곡 : <input name="singer" />
         </p>
         <p>
-          <button>추가</button>
+          <button onClick={onAddUser}>추가</button>
         </p>
       </div>
     </>

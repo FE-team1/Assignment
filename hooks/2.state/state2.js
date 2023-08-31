@@ -63,6 +63,11 @@ function State2() {
     ],
   });
 
+  const onAddUser = (e) => {
+    e.preventDefault();
+    console.log(e.target.user);
+  };
+
   return (
     <S.Wrapper>
       <h1>문제2</h1>
@@ -85,9 +90,9 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" />
-        <input placeholder="댓글 내용" />
-        <button>댓글 작성</button>
+        <input placeholder="작성자" name="user" />
+        <input placeholder="댓글 내용" name="content" />
+        <button onClick={onAddUser}>댓글 작성</button>
       </div>
       <S.CommentList>
         {/* list */}

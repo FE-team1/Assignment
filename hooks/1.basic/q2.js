@@ -42,6 +42,7 @@ function Q2() {
     // console.log(index.current.value);
     // arr.push(index.current.value);
     setArr([...arr, index.current.value]);
+    setAdd(false);
   };
 
   const onSubmitList = () => {
