@@ -40,7 +40,8 @@ function Q2() {
         <p>
           <button onClick={onSubmitList}>제출</button>
         </p>
-        {arr.length === 0 ? '제출된 목록이 없습니다' : <ul>{add ? arr.map((list) => <li>{list}</li>) : ''}</ul>}
+        {arr.length === 0 ? '제출된 목록이 없습니다' : 
+        <ul>{add ? arr.map((list) => <li>{list}</li>) : ''}</ul>}
         
       
       </div>

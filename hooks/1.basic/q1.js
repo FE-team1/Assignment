@@ -16,7 +16,7 @@ function Q1() {
     let content = null;
     if (show) {
         content = '보이기';
-    } else if (!show) {
+    } else {
         content = '숨기기'
     }
 
