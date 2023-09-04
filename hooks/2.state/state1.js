@@ -1,6 +1,5 @@
 import { useState } from "react";
 import PlayListMock from "../../__mock__/playList.json";
-
 function State1() {
   /* 
     문제 1.
@@ -12,41 +11,48 @@ function State1() {
     삭제 버턴을 눌렀을 때 데이터가 삭제될 수 있도록 해주세요
   */
 
-  console.log(PlayListMock.playlist);
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
 
-  const [{ title, singer }, setAddUser] = useState({
-    title: "",
-    singer: "",
-  });
+  const [list, setList] = useState(PlayListMock.playlist);
 
-  const onAddUser = (e) => {
-    console.log(e.target.title, e.target.singer);
+  const onAddPlayList = (e) => {
+    e.preventDefault();
+    const { songName, userName } = e.target;
+    setList([
+      ...PlayListMock.playlist,
+      {
+        title: songName.value,
+        signer: userName.value,
+      },
+    ]);
+    console.log(PlayListMock.playlist);
   };
 
   return (
-    <>
+    <form onSubmit={onAddPlayList}>
       <h1>문제1</h1>
       <ul>
         {/* list */}
         {/* 예시 데이터입니다 */}
-        <li>
-          <h3>Summer</h3>
-          <p>Joe Hisaishi</p>
-        </li>
+        {list.map((song) => (
+          <li>
+            <h3>{song.title}</h3>
+            <p>{song.signer}</p>
+          </li>
+        ))}
       </ul>
       <div>
         <p>
-          곡명 : <input name="title" />
+          곡명 : <input name="songName" />
         </p>
         <p>
-          가수/작곡 : <input name="singer" />
+          가수/작곡 : <input name="userName" />
         </p>
         <p>
-          <button onClick={onAddUser}>추가</button>
+          <button>추가</button>
         </p>
       </div>
-    </>
+    </form>
   );
 }
 export default State1;

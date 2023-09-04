@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
 
@@ -63,43 +63,64 @@ function State2() {
     ],
   });
 
-  const onAddUser = (e) => {
+  const addUser = (e) => {
     e.preventDefault();
-    console.log(e.target.user);
+    const { userName, content } = e.target;
+    setPost({
+      title: "안녕하세요 여러분 김성용 강사입니다 :)",
+      content: "오늘도 모두 화이팅입니다!",
+      User: {
+        nickname: "김성용",
+        age: 20,
+        height: 190,
+      },
+      Comments: [
+        {
+          User: {
+            nickname: userName.value,
+          },
+          content: content.value,
+          myComment: false,
+        },
+        ...post.Comments,
+      ],
+    });
   };
 
   return (
-    <S.Wrapper>
-      <h1>문제2</h1>
-      <S.PostBox>
-        <S.PostTitle>제목: {post.title}</S.PostTitle>
-        <S.PostContent>내용: {post.content}</S.PostContent>
-      </S.PostBox>
-      <S.PostInfo>
-        <p>
-          작성자: <span>{post.User.nickname}</span>
-        </p>
-        <p>
-          작성자 나이: <span>{post.User.age}</span>
-        </p>
-        <p>
-          작성자 키: <span>{post.User.height}</span>
-        </p>
-      </S.PostInfo>
-      <div>
-        <p>
-          댓글 수: <span>{post.Comments.length}</span>
-        </p>
-        <input placeholder="작성자" name="user" />
-        <input placeholder="댓글 내용" name="content" />
-        <button onClick={onAddUser}>댓글 작성</button>
-      </div>
-      <S.CommentList>
-        {/* list */}
-        {/* 예시 데이터 */}
-        <Comment />
-      </S.CommentList>
-    </S.Wrapper>
+    <form onSubmit={addUser}>
+      <S.Wrapper>
+        <h1>문제2</h1>
+        <S.PostBox>
+          <S.PostTitle>제목: {post.title}</S.PostTitle>
+          <S.PostContent>내용: {post.content}</S.PostContent>
+        </S.PostBox>
+        <S.PostInfo>
+          <p>
+            작성자: <span>{post.User.nickname}</span>
+          </p>
+          <p>
+            작성자 나이: <span>{post.User.age}</span>
+          </p>
+          <p>
+            작성자 키: <span>{post.User.height}</span>
+          </p>
+        </S.PostInfo>
+        <div>
+          <p>
+            댓글 수: <span>{post.Comments.length}</span>
+          </p>
+          <input placeholder="작성자" name="userName" />
+          <input placeholder="댓글 내용" name="content" />
+          <button>댓글 작성</button>
+        </div>
+        <S.CommentList>
+          {/* list */}
+          {/* 예시 데이터 */}
+          <Comment post={post} setPost={setPost} />
+        </S.CommentList>
+      </S.Wrapper>
+    </form>
   );
 }
 export default State2;
