@@ -26,9 +26,11 @@ function State2() {
     },
     Comments: [
       {
+        // 닉네임 
         User: {
           nickname: "김사과",
         },
+        // 내용
         content: "오늘도 화이팅입니다!",
         myComment: false,
       },
@@ -62,6 +64,8 @@ function State2() {
       },
     ],
   });
+  const [comment, setComment] = useState(post.Comments)
+  console.log(`comment:`, comment)
 
   return (
     <S.Wrapper>
@@ -90,6 +94,12 @@ function State2() {
         <button>댓글 작성</button>
       </div>
       <S.CommentList>
+        {comment && comment.map((Comments) => (
+          <li >
+          <h3>{Comments.User.nickname}</h3>
+          <p>{Comments.content}</p>
+        </li>
+        ))}
         {/* list */}
         {/* 예시 데이터 */}
         <Comment />

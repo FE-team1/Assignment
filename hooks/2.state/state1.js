@@ -1,122 +1,63 @@
 import { useState } from "react";
 import PlayListMock from "../../__mock__/playList.json";
 
-function Article (props) {
-  <>
-    <h3>{props.title}</h3>
-    <p>{props.signer}</p>
-  </>
-}
-
-function Create (props) {
-  return(
-    <>
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      const title = e.target.title.value;
-      const signer = e.target.signer.value;
-      props.onCreate(title, signer);
-    }}>
-      <p>
-        곡명 : <input type='text' name="title"/>
-      </p>
-      <p>
-        가수/작곡 : <input type='text' name="signer"/>
-      </p>
-        <p>
-        <input type='submit' value='추가'/>
-      </p>
-      </form>
-      </>
-  )
-}
-
-
-function Ul (props) {
-  const lis = []
-  for(let i=0; i<props.playLists.length; i++){
-    let p = props.playLists[i];
-    lis.push(<li key={p.id}>
-      <a id={p.id} href={"/read/"+p.id} style={{textDecoration:'none', color:'red'}} onClick={(e) => {
-        e.preventDefault();
-        // mode 바꾸기 위해 props로 전달받음
-        props.onChangeMode();
-        props.onChangeMode(Number(e.target.id))
-      }}>
-        <h3>{p.title}</h3><p>{p.signer}</p></a></li>)
-  }
-  return (
-    <ol style={{listStyle:'none'}}>
-      {lis}
-    </ol>
-  )
-}
-
 function State1() {
   console.log(PlayListMock.playlist);
+  const[playList, setPlayList] = useState(PlayListMock.playlist);
+  const[title, setTitle] = useState('');
+  const[signer, setSigner] = useState('');
+  // playListMock(10)과 playListMock의 차이점?
 
-  const [mode, setMode] = useState('CREATE');
-  const [id, setId] = useState(null);
-  const [nextId, setNextId] = useState(2);
-  const [playLists, setPlayLists] = useState([
-    {id: 1, title: 'Summer', signer: 'Joe Hisaishi'},
-  ])
-  
-  let content = null;
-  if (mode === 'CREATE') {
-    content = 
-    <Create onCreate={(_title, _signer) => {
-      const newSong  = {id:nextId, title:_title, signer:_signer}
-      const newSongs = [...playLists];
-      newSongs.push(newSong);
-      setPlayLists(newSongs)
-      setMode('READ');
-      setId(nextId);
-      setNextId(nextId + 1);
-    }}></Create>
+  const onAddSong = (e) => {
+    e.preventDefault();
+    const newSong = {title, signer}
+    setPlayList((prev) => [...prev, newSong]);
+    // inputBox 비워주기
+    setTitle("");
+    setSigner("");
   }
-  else if (mode === 'READ') {
-    let title, signer = null;
-    for (let i=0; i<playLists.length; i++) {
-      if(playLists[i].id === id){
-        title = playLists[i].title;
-        signer = playLists[i].signer;
-        console.log(playLists[i].id, id)
-      }
-    }
-    content = 
-    <>
-    <Article title={title} signer={signer}></Article>
-    <Create></Create>
-    <input type="button" value='삭제' 
-    onClick={() => {
-      const newPlayLists = [];
-      for(let i=0; i<playLists.length; i++) {
-        if(playLists[i].id !== id) {
-          newPlayLists.push(playLists[i])
+
+  const onRemoveSong = (song) => {
+      const newList = [];
+      for(let i=0; i<playList.length; i++) {
+        // playList[i].title 하면 인덱스의 title을 가져옴
+        if(playList[i].title !== song.title) {
+          console.log(song.title)
+          newList.push(playList[i])
         }
       }
-      setPlayLists(newPlayLists);
-      setMode('READ')}}
-    />
-    </>
-  }
+      setPlayList(newList);
+    }
 
 
   return (
     <>
       <h1>문제1</h1>
-      <Ul playLists={playLists} onChangeMode={(_id) => {
-          setMode('READ');
-          setId(_id);
-        }}>
-        {/* list */}
-        {/* 예시 데이터입니다 */}
-        <li >
-        </li>
-      </Ul>
-      <Article></Article>
-      {content}
+      <ul>
+      {/* index 인자는 배열안의 인덱스(몇 번째)를 의미하며 item 에는 배열안의 값들이 하나씩 순서대로 담긴다. */}
+      {/* https://tlsdnjs12.tistory.com/56 => map오류 해결*/}
+        {playList && playList.map((song, i) => (
+          // song으로 목데이터 하나하나 가져온다
+          // https://beomy.tistory.com/29 -> key값에 대한 설명
+          <li key={i}>
+            <h3>{song.title}</h3>
+            <p>{song.signer}</p>
+            {/* 강의에서 보면 매개변수로 이렇게 넘겼다! */}
+            <button onClick={() => onRemoveSong(song)}>삭제</button>
+          </li>
+        ))}
+      </ul>
+      <form onSubmit={onAddSong}>
+        <p>
+          곡명 : <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
+        </p>
+        <p>
+          가수/작곡 : <input type="text" value={signer} onChange={(e) => setSigner(e.target.value)}/>
+        </p>
+        <p>
+          <button type="submit">추가</button>
+        </p>
+      </form>
     </>
   );
 }

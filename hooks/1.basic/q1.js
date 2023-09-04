@@ -27,7 +27,7 @@ function Q1() {
                 <h2>문제1-1.</h2>
                 <input
                     type="text"
-                    placeholder={"김가영"}
+                    placeholder={"김성용"}
                     style={{ textAlign: "center" }}
                     onChange={onChangeValue}
         />
