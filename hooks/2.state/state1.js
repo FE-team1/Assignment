@@ -72,7 +72,7 @@ function State1() {
       setPlayLists(newSongs)
       setMode('READ');
       setId(nextId);
-      setNextId(nextId+1);
+      setNextId(nextId + 1);
     }}></Create>
   }
   else if (mode === 'READ') {
